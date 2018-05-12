@@ -30,12 +30,14 @@ let page=document.querySelector(".page-container");
 let playAgain=document.querySelector(".play-again");
 playAgain.addEventListener("click",function(){restart();});
 
+//add event lsitener to window object to load the game
 window.addEventListener("load",function()
 	{
 		//alert("READY TO MATCH!!!!!!");
-		startGame();
+		startGame(); //calling startGame to startGame
 	});
-function shuffle(array) {
+function shuffle(array) //shuffle cards function
+ {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
@@ -49,10 +51,10 @@ function shuffle(array) {
     return array;
 }
 
-function startGame()
+function startGame() //starts Game
 {
 	//cardArray=[...card];
-	cardArray=shuffle(cardArray);
+	cardArray=shuffle(cardArray); //shuffle the cards
     let tempArray=[];
     for(let i=0;i<starCount.length;i++)
     {
@@ -63,29 +65,29 @@ function startGame()
 	openCardsArray=[];
 	moveDisplay.innerText=moves;
     clearTime();
-    timer();
-    for(let i=0;i<cardArray.length;i++)
+    timer();           //start the timer
+    for(let i=0;i<cardArray.length;i++) //adding shuffled cards to card element
     {
         cardDeck.innerHTML='';
         tempArray.forEach.call(cardArray,function(item){cardDeck.appendChild(item);});
         //cardArray[i].classList.toggle('match');
-        cardArray[i].classList.toggle('open');
+        cardArray[i].classList.toggle('open');			//show cards initial 
         cardArray[i].classList.toggle('show');
         //delay(500);
         setTimeout(function(){//alert("In play function Removing cards");
 		for(let i=0;i<cardArray.length;i++)
     {
     	//alert("Removing it");
-        cardArray[i].classList.remove('show','open','match');
-    }},500);
+        cardArray[i].classList.remove('show','open','match'); //close them after initial display of about 700 milliseconds
+    }},700);
     }
-    for(let i=0;i<cardArray.length;i++)
+    for(let i=0;i<cardArray.length;i++) //event listener to cards
 	{
     	cardArray[i].addEventListener("click",function(event)
     	{//alert("target:"+event.target.className);
     		//let tag=event.target;
     		//alert("Child"+tag);
-			openCard(event);
+			openCard(event); //function to open cards
     	});
 	}
 
@@ -96,57 +98,58 @@ function startGame()
 function openCard(event)
 {
 	let clsLs=event.target.classList;
-	if(clsLs.length>=3)
+	if(clsLs.length>=3) //already selceted 
 	{
 		if(clsLs.length===3)
 		{
-			alert("Choose other one to match");	
+			alert("Choose other one to match");	//asking other selection to match
 		}
-		else
+		else //already matched cards
 		{
-			alert("You already matched it");
+			alert("You already matched it"); //alert the user that the card is already matched
 		}
 		
 	}
-	else if(clsLs.length===1)
+	else if(clsLs.length===1) //opening a closed card
 	{
-		if(openCardsArray.length===0)
+		if(openCardsArray.length===0) //no element in checking array
 		{
 			event.target.classList.toggle("open");
     		event.target.classList.toggle("show");
 			openCardsArray.push(event.target);
 		}
-		else if(openCardsArray.length===1)
+		else if(openCardsArray.length===1) //already element in checking array compare the elements
 		{
 			event.target.classList.toggle("open");
     		event.target.classList.toggle("show");
-    		moves+=1;
+    		moves+=1; //Increment moves 
     		moveDisplay.innerText=moves;
-    		checkMove();
+    		checkMove(); //track the number of moves
+    		/*Checking the opened cards*/
     		setTimeout(function(){
     		openCardsArray.push(event.target);
-			if(openCardsArray[0].innerHTML===openCardsArray[1].innerHTML)
+			if(openCardsArray[0].innerHTML===openCardsArray[1].innerHTML) //card matches
 			{
 				//alert("great");
-				tilesFlipped+=2;
-				checkEnd();
+				tilesFlipped+=2; //track the number of cards flipped
+				checkEnd();     //to check end of game
 				openCardsArray[0].classList.toggle("match");
 				openCardsArray[1].classList.toggle("match");
 				openCardsArray=[];
 			}
-			else
+			else //card dismatches
 			{
 
 				//alert("No");
 				//alert(openCardsArray[0]+"   "+openCardsArray[1]);
-				openCardsArray[0].style.background="red";
+				openCardsArray[0].style.background="red";   //highlight them red
 				openCardsArray[1].style.background="red";
 				setTimeout(function(){
 					//alert("Inside Changing one");
-					openCardsArray[0].style.background="";
+					openCardsArray[0].style.background=""; //rest to original color
 					openCardsArray[1].style.background="";
-					openCardsArray[0].classList.remove('show','open');
-					openCardsArray[1].classList.remove('show','open');
+					openCardsArray[0].classList.remove('show','open');	//close dismatched cards after 500 milliseconds
+					openCardsArray[1].classList.remove('show','open'); 
 					openCardsArray=[];},500);
 					
 			}},500);
@@ -157,8 +160,9 @@ function openCard(event)
 }
 function checkEnd()
 {
-	if(tilesFlipped===16)
+	if(tilesFlipped===16) //indicates end of game
 	{			
+			/*display the winner message*/
 				let star=document.querySelector(".stars");
 				page.classList.toggle("hidden");
 				winner.classList.toggle("hidden");
@@ -166,14 +170,8 @@ function checkEnd()
 				document.querySelector(".final-moves").innerText="Moves: "+moves;
 				let s=document.querySelector(".fstars");
 				let str="";
-				//for(let i=0;i<starCount.length;i++)
-				//{
-					//str="<li><i class="+starCount[i]+"><i></li>"
-					s.innerText="Stars"
-				s.innerHTML=star.innerHTML;
-				//}
-				//playAgain.addEventListener("click",restart());
-	
+				s.innerHTML=star.innerHTML;				
+				/*reset*/
 				tilesFlipped=0;
 				moves=0;
 				moveDisplay.innerText=moves;
@@ -181,14 +179,14 @@ function checkEnd()
 	
 }
 
-let reset=document.querySelector('.restart');
-reset.addEventListener("click",function(){restart();});
+let reset=document.querySelector('.restart'); //onclicking reset button
+reset.addEventListener("click",function(){restart();});  //refreshing
 function restart()
 {
 	//alert("Restarting Game");
     	window.location.reload();
 }
-function checkMove()
+function checkMove() //track moves
 {
 	if(moves>20&&moves<=30)
 	{
@@ -200,7 +198,7 @@ function checkMove()
 	}
 }
 
-function timer() 
+function timer() //timer 
 {
     t = setTimeout(add, 1000);
 }
@@ -224,7 +222,7 @@ function add()
     timer();
 }
 
-function clearTime()
+function clearTime() //clear time
 {
 	seconds=0;
 	minutes=0;
