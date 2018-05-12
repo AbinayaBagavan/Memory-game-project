@@ -77,7 +77,7 @@ function startGame()
     {
     	//alert("Removing it");
         cardArray[i].classList.remove('show','open','match');
-    }},1000);
+    }},500);
     }
     for(let i=0;i<cardArray.length;i++)
 	{
@@ -173,15 +173,10 @@ function checkEnd()
 				s.innerHTML=star.innerHTML;
 				//}
 				//playAgain.addEventListener("click",restart());
-	//setTimeout(function()
-			//{
+	
 				tilesFlipped=0;
 				moves=0;
 				moveDisplay.innerText=moves;
-				//restart();
-				
-			//},50000);	
-	//alert("getting the winner message");
 		}
 	
 }
